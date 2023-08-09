@@ -20,7 +20,6 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-  trigger: none
 container:
   image: aquasec/aqua-scanner
   env:
