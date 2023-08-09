@@ -28,7 +28,7 @@ container:
     AZURE_TOKEN: vipvpxko7hbxzeygmu6nupw7lshoetqp63nvwomensqxd4octwga
     TRIVY_RUN_AS_PLUGIN: aqua
     # For http/https proxy configuration add env vars: HTTP_PROXY/HTTPS_PROXY, CA-CRET (path to CA certificate)
-
+steps:
 - checkout: self
   fetchDepth: 0
 - script: |
