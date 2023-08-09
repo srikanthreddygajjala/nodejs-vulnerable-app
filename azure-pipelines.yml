@@ -1,0 +1,41 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  name: default
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+  trigger: none
+container:
+  image: aquasec/aqua-scanner
+  env:
+    AQUA_KEY: 3VxThjTqqWAjKIg4FOGdOF
+    AQUA_SECRET: fDCKEYiW9q3sxQBsgIpbmSxUXFZucf9juE2
+    AZURE_TOKEN: vipvpxko7hbxzeygmu6nupw7lshoetqp63nvwomensqxd4octwga
+    TRIVY_RUN_AS_PLUGIN: aqua
+    # For http/https proxy configuration add env vars: HTTP_PROXY/HTTPS_PROXY, CA-CRET (path to CA certificate)
+steps:
+- checkout: self
+  fetchDepth: 0
+- script: |
+    trivy fs --scanners config,vuln,secret .
+    # To customize which severities to scan for, add the following flag: --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+    # To enable SAST scanning, add: --sast
+    # To enable reachability scanning, add: --reachability
+    # To enable npm/dotnet non-lock file scanning, add: --package-json / --dotnet-proj
+  displayName: Aqua scanner
